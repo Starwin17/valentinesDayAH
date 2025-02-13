@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Ensure proper scaling on mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Valentine's Day, My Love!</title>
+  <!-- Google Fonts for a romantic look -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset margins and paddings */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Set a soft background and center content */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #ffe6e6, #fff0f5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Main Container (Greeting) */
+    .container {
+      text-align: center;
+      padding: 20px;
+      z-index: 10;
+    }
+
+    /* Romantic heading style */
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4rem;
+      color: #e60073;
+      margin-bottom: 10px;
+      animation: fadeInDown 2s ease-out;
+    }
+
+    /* Supporting paragraph style */
+    p {
+      font-size: 1.5rem;
+      color: #333;
+      animation: fadeInUp 2s ease-out;
+    }
+
+    /* Fade in animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Falling hearts animation */
+    .heart {
+      position: absolute;
+      top: -10%;
+      color: #ff4d4d;
+      animation: fall linear infinite;
+      user-select: none;
+      pointer-events: none;
+    }
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* -------- Button Styling -------- */
+    .btn {
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(145deg, #ff9db0, #da69a2);
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      margin-top: 20px;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    /* -------- Quiz Game Container -------- */
+    #gameContainer {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.97);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      z-index: 20;
+      display: none;
+      width: 80%;
+      max-width: 400px;
+    }
+    #gameContainer h2 {
+      margin-bottom: 15px;
+      color: #e60073;
+    }
+    #gameContainer p {
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+    }
+    #gameContainer input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #feedback {
+      color: #e60073;
+      margin-top: 10px;
+      min-height: 20px;
+    }
+
+    /* -------- Photo Tree (Final Screen) -------- */
+    #photoTreeContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #ffffff; /* A soft wall-like background */
+      display: none;
+      z-index: 30;
+      overflow: hidden;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+    }
+    /* Optional header text on the photo tree screen */
+    #photoTreeContainer h2 {
+      text-align: center;
+      color: #ffffff;
+      margin-top: 20px;
+      /* font-family: 'ro', cursive; */
+      font-size: 6rem;
+      font-weight: 900;
+    }
+    /* The tree image (placed at the bottom center) */
+    .tree {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: auto;
+    }
+
+    .patti {
+        height: 50vh;
+        width: 30vw;
+    }
+    /* Photos hanging on the tree */
+    .photo {
+      position: absolute;
+      width: 120px;
+      border: 5px solid #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transform: rotate(-5deg);
+    }
+    /* Simulate a string from which the photo is hanging */
+    .photo::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      background: #555;
+      transform: translateX(-50%);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 3rem;
+      }
+      p {
+        font-size: 1.2rem;
+      }
+      .btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+      }
+      .patti {
+        height: 50vh;
+        width: 50vw;
+    }
+    }
+  </style>
+</head>
+<body>
+  <!-- Main Message Container -->
+  <div class="container" id="mainContainer">
+    <h1>Happy Valentine's Day, My Love!</h1>
+    <p>You fill my heart with endless joy and love. Every moment with you is a treasure.</p>
+    <button id="startButton" class="btn">❤️</button>
+  </div>
+
+  <!-- Quiz Game Container -->
+  <div id="gameContainer">
+    <h2>Love Quiz</h2>
+    <p id="questionText"></p>
+    <input type="text" id="answerInput" placeholder="Your answer here..." />
+    <br>
+    <button id="submitAnswer" class="btn">Submit</button>
+    <div id="feedback"></div>
+  </div>
+
+  <!-- Photo Tree Container -->
+  <div id="photoTreeContainer" >
+    <!-- <h2>Pone Pattiiiii 🥱</h2> -->
+    <img src="./Screenshot 2025-02-13 015953.png" class="patti" />
+    <!-- Add more photos as needed -->
+     <div class="denks">
+     thank you for ur cooperation 🙏 </div>
+  </div>
+
+  <script>
+    // ---------- Falling Hearts Animation ----------
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      // Random horizontal position (0% to 100% of viewport width)
+      heart.style.left = Math.random() * 100 + 'vw';
+      // Random animation duration between 3 and 5 seconds
+      heart.style.animationDuration = (3 + Math.random() * 2) + 's';
+      // Random size for the heart
+      heart.style.fontSize = (16 + Math.random() * 24) + 'px';
+      heart.innerHTML = '❤️';
+      document.body.appendChild(heart);
+      // Remove heart after animation
+      setTimeout(() => {
+        heart.remove();
+      }, parseFloat(heart.style.animationDuration) * 1000);
+    }
+    setInterval(createHeart, 500);
+
+    // ---------- Love Quiz Game Logic ----------
+    const questions = [
+      {
+        question: "What is the symbol of love?",
+        answers: ["heart", "❤️"]
+      },
+      {
+        question: "Who is responsible for my happiness",
+        answers: ["Me","me"]
+      },
+      {
+        question: "Who makes my heart skip a beat?",
+        answers: ["Me","me"]
+      }
+    ];
+    let currentQuestion = 0;
+
+    // Get DOM elements
+    const startButton   = document.getElementById('startButton');
+    const mainContainer = document.getElementById('mainContainer');
+    const gameContainer = document.getElementById('gameContainer');
+    const questionText  = document.getElementById('questionText');
+    const answerInput   = document.getElementById('answerInput');
+    const submitAnswer  = document.getElementById('submitAnswer');
+    const feedback      = document.getElementById('feedback');
+    const photoTreeContainer = document.getElementById('photoTreeContainer');
+
+    // Start the quiz when the start button is clicked
+    startButton.addEventListener('click', () => {
+      mainContainer.style.display = 'none';
+      gameContainer.style.display = 'block';
+      currentQuestion = 0;
+      feedback.textContent = '';
+      answerInput.value = '';
+      displayQuestion();
+    });
+
+    // Display the current question
+    function displayQuestion() {
+      if (currentQuestion < questions.length) {
+        questionText.textContent = questions[currentQuestion].question;
+      }
+    }
+
+    // Check the user's answer
+    function checkAnswer() {
+      const userAnswer = answerInput.value.trim().toLowerCase();
+      const validAnswers = questions[currentQuestion].answers;
+      if (validAnswers.includes(userAnswer)) {
+        feedback.textContent = "Correct!";
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          answerInput.value = '';
+          setTimeout(() => {
+            feedback.textContent = '';
+            displayQuestion();
+          }, 1000);
+        } else {
+          feedback.textContent = "You've completed the quiz!";
+          setTimeout(showPhotoTree, 1000);
+        }
+      } else {
+        feedback.textContent = "Oops, that's not correct. Try again!";
+      }
+    }
+
+    submitAnswer.addEventListener('click', checkAnswer);
+    answerInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkAnswer();
+      }
+    });
+
+    // ---------- Show the Photo Tree Screen ----------
+    function showPhotoTree() {
+      gameContainer.style.display = 'none';
+      photoTreeContainer.style.display = 'flex';
+    }
+  </script>
+</body>
+</html>
